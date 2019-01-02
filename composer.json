@@ -1,0 +1,27 @@
+{
+    "name": "colourbox-account/i18n",
+    "description": "Internalization tool by Colourbox for PHP",
+    "homepage": "https://github.com/ColourboxDevelopment/composer-translation-tool",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Zoltan Fischer",
+            "email": "zoltan@colourbox.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/ColourboxDevelopment/composer-translation-tool/issues"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^5.3.0 || ^7.0",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "CBX": "src/"
+        }
+    }
+}
