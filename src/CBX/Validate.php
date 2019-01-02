@@ -17,7 +17,7 @@ class Validate
     }
 
     public static function index($index) {
-        return $index && preg_match("/^[^/]{1,255}$/", $index);
+        return $index && preg_match("/^[^\/]{1,255}$/", $index);
     }
 
     public static function url($url) {
