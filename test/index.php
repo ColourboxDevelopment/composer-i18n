@@ -26,6 +26,7 @@ $i18n->setDomain('i18n-develop-test');
     <p>Domain: <?=$i18n->getDomain();?></p>
 
     <p>companyAddress: <?=$i18n->_('companyAddress');?></p>
+    <p>notExistingIndex: <?=$i18n->_('notExistingIndex');?></p>
 
 </body>
 </html>

@@ -21,7 +21,7 @@ class Collections
 
     /** Add collection */
     public function add($index, $url = false) {
-        $fullIndex = Index::toCollectionIndex($index);
+        $fullIndex = Index::toCollectionIndex($index, $this->i18n->getLanguage(), $this->i18n->getDomain());
         if (!$this->is($fullIndex)) {
             return $this->data[$fullIndex] = new Collection($this->i18n, $fullIndex, $url);
         }
@@ -30,12 +30,12 @@ class Collections
 
     /** Check for collection */
     public function is($index) {
-        return isset($this->data[Index::toCollectionIndex($index)]);
+        return isset($this->data[Index::toCollectionIndex($index, $this->i18n->getLanguage(), $this->i18n->getDomain())]);
     }
 
     /** Get collection */
     public function get($index) {
-        $fullIndex = Index::toCollectionIndex($index);
+        $fullIndex = Index::toCollectionIndex($index, $this->i18n->getLanguage(), $this->i18n->getDomain());
         return $this->is($fullIndex) ? $this->data[$fullIndex] : false;
     }
 

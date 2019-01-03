@@ -69,7 +69,10 @@ class i18nClass
             $collection = $this->collections->get($collectionIndexData->fullIndex);
             if ($collection) {
                 if ($collection->load()) {
-                    return '!!!';
+                    $translation = $collection->get($indexData->fullIndex);
+                    if ($translation) {
+                        return $translation->getDisplayText();
+                    }
                 }
             }
         }

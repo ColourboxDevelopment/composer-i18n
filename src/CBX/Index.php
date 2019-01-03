@@ -30,30 +30,30 @@ class Index
 
     public static function toIndex($index, $language = null, $domain = null) {
         $indexData = Index::getIndexData($index, $language, $domain);
-        return $indexData->fullIndex;
+        return $indexData ? $indexData->fullIndex : false;
     }
 
     public static function getIndexData($cIndex, $language = null, $domain = null) {
         if ($cIndex) {
             $splits = explode("/", $cIndex);
-            $language = $language ? $language : i18n::getLanguage();
-            $domain = $domain ? $domain : i18n::getDomain();
+            $language = $language;
+            $domain = $domain;
             $collection = Index::global();
             $index = '';
             if (count($splits) === 1) {
                 $index = $cIndex;
             } else if (count($splits) === 2) {
-                $collection = splits[0];
-                $index = splits[1];
+                $collection = $splits[0];
+                $index = $splits[1];
             } else if (count($splits) === 3) {
-                $domain = splits[0];
-                $collection = splits[1];
-                $splits = splits[2];
+                $domain = $splits[0];
+                $collection = $splits[1];
+                $index = $splits[2];
             } else if (count($splits) === 4) {
-                $language = splits[0];
-                $domain = splits[1];
-                $collection = splits[2];
-                $splits = splits[3];
+                $language = $splits[0];
+                $domain = $splits[1];
+                $collection = $splits[2];
+                $index = $splits[3];
             }
             if (!Validate::index($index)) {
                 // console.error(`Invalid index: ${index} in ${cIndex}`); // eslint-disable-line no-console
@@ -95,8 +95,8 @@ class Index
     public static function getCollectionIndexData($cIndex, $language = null, $domain = null) {
         if ($cIndex) {
             $splits = explode('/', $cIndex);
-            $language = $language ? $language : i18n::getLanguage();
-            $domain = $domain ? $domain : i18n::getDomain();
+            $language = $language;
+            $domain = $domain;
             $index = '';
             if (count($splits) === 1) {
                 $index = $cIndex;
