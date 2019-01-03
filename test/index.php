@@ -25,6 +25,8 @@ CBX\i18n::setDomain('i18n-develop-test');
     <p>Domain: <?=CBX\i18n::getDomain();?></p>
 
     <p>companyAddress: <?=CBX\i18n::_('companyAddress');?></p>
+    <p>html escaped: <?=CBX\i18n::_htmlEscaped('<p>Test</p>');?></p>
+    <p>placeholder: <?=CBX\i18n::_htmlEscaped('Add $0$ + $number$ = 3', [ 1, 'number' => '2' ]);?></p>
     <p>notExistingIndex: <?=CBX\i18n::_('notExistingIndex');?></p>
 
 </body>

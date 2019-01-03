@@ -61,7 +61,7 @@ class i18nClass
         return Index::toIndex($index, $this->language, $this->domain);
     }
 
-    public function _($index) {
+    public function _($index, $placeholders = []) {
         $this->loadConfig();
         $indexData = $this->getIndexData($index);
         if ($indexData) {
@@ -71,12 +71,28 @@ class i18nClass
                 if ($collection->load()) {
                     $translation = $collection->get($indexData->fullIndex);
                     if ($translation) {
-                        return $translation->getDisplayText();
+                        return $this->replacePlaceholders($translation->getDisplayText(), $placeholders);
                     }
                 }
             }
         }
         return $index;
+    }
+
+    public function _htmlEscaped($index, $placeholders = []) {
+        return str_replace(["<", ">", "'", '"'], ["&lt;", "&gt;", "&#39;", '&#34;'], $this->_($index, $placeholders));
+    }
+
+    public function replacePlaceholders($text, $placeholders = []) {
+        $from = [];
+        $to = [];
+        if (count($placeholders) > 0) {
+            foreach ($placeholders as $key => $value) {
+                $from[] = "$".$key."$";
+                $to[] = $value;
+            }
+        }
+        return str_replace($from, $to, $text);
     }
 
     private function loadConfig() {
