@@ -76,7 +76,7 @@ class i18nClass
                 }
             }
         }
-        return $index;
+        return $this->replacePlaceholders($index, $placeholders);
     }
 
     public function _htmlEscaped($index, $placeholders = []) {
