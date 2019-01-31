@@ -2,8 +2,6 @@
 
 namespace CBX;
 
-use CBX;
-
 class API
 {
     private $url = null;

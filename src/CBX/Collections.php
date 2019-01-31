@@ -2,8 +2,6 @@
 
 namespace CBX;
 
-use CBX;
-
 class Collections
 {
     private $i18n;

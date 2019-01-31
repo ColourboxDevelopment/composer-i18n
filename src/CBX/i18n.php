@@ -2,8 +2,6 @@
 
 namespace CBX;
 
-use CBX;
-
 class i18n
 {
     private static $i18nObject = null;

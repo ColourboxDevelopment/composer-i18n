@@ -2,8 +2,6 @@
 
 namespace CBX;
 
-use CBX;
-
 class i18nClass
 {
     private $language = '';
