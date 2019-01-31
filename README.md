@@ -54,6 +54,15 @@ echo CBX\i18n::_('newPrice', [ 'price' => '10€' ]);
 
 > If the requested translation not found in the translation api the index is returned.
 
+# Test
+
+Run
+
+```
+test/test.sh
+```
+
+
 # Requirement
 
 PHP: ^5.3.0 || ^7.0
