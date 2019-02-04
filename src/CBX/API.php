@@ -6,46 +6,28 @@ class API
 {
     private $url = null;
 
-    public function setURL($url) {
-        if (Validate::url($url)) {
+    public function __construct($url) {
+        if ($url) {
             $this->url = $url;
-            return $this->url;
+        } else {
+            trigger_error("I18NClass API Error. API url '{$url}' is not valid.");
         }
-        return false;
     }
 
     public function getURL() {
         return $this->url;
     }
 
-    public function isValid() {
-        return Validate::url($this->url);
-    }
-
-    public function getConfigURL($language, $domain) {
-        if (Validate::language($language) && Validate::domain($domain) && $this->isValid()) {
-            return "{$this->getURL()}/translation/config/{$language}/{$domain}";
-        }
-        return false;
-    }
-
     public function fetchConfig($language, $domain) {
-        $url = $this->getConfigURL($language, $domain);
-        if (Validate::url($url)) {
-            return $this->fetch($url);
-        }
-        return false;
+        return $this->fetch("{$this->getURL()}/translation/config/{$language}/{$domain}");
     }
 
     public function fetchCollection($url) {
-        if (Validate::url($url)) {
-            return $this->fetch($url);
-        }
-        return false;
+        return $this->fetch($url);
     }
 
-    public function fetch($url) {
-        if (Validate::url($url)) {
+    private function fetch($url) {
+        if ($url) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -57,8 +39,14 @@ class API
                 $json = json_decode(trim($result), true);
                 if (json_last_error() === 0) {
                     return $json;
+                } else {
+                    trigger_error("I18NClass API Error. (JSON) ".json_last_error_msg());
                 }
+            } else {
+                trigger_error("I18NClass API Error. (CURL) ".curl_error($ch));
             }
+        } else {
+            trigger_error("I18NClass API Error. Url '{$url}' is not valid. ");
         }
         return false;
     }

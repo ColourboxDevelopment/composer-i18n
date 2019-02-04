@@ -7,9 +7,7 @@ spl_autoload_register(function ($class_name) {
     require_once __DIR__ . '/../src/'.str_replace('\\', '/', $class_name).'.php';
 });
 
-CBX\i18n::setAPIURL("https://tb.colourbox.com");
-CBX\i18n::setLanguage('en_GB');
-CBX\i18n::setDomain('i18n-develop-example');
+CBX\i18n::initialize("en_GB", "i18n-develop-example", "https://tb.colourbox.com");
 
 $output = [
     "API Host: ".CBX\i18n::getAPIURL(),
@@ -17,8 +15,8 @@ $output = [
     "Domain: ".CBX\i18n::getDomain(),
     "\n",
     "companyAddress: ".CBX\i18n::_('companyAddress'),
-    "html escaped (<p>Test</p>): ".CBX\i18n::_htmlEscaped('<p>Test</p>'),
-    'placeholder (Add $0$ + $number$ = 3): '.CBX\i18n::_('Add $0$ + $number$ = 3', [ 1, 'number' => '2' ]),
+    "html escaped: ".CBX\i18n::_htmlEscaped('htmlText'),
+    'placeholder: '.CBX\i18n::_('addNumber', [ 'nr1' => 1, 'nr2' => 2, 'nr3' => 3 ]),
     "notExistingIndex: ".CBX\i18n::_('notExistingIndex'),
     "\n",
 ];

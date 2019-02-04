@@ -4,37 +4,59 @@ namespace CBX;
 
 class Collections
 {
-    private $i18n;
-    private $data;
+    private $config;
+    private $collections;
 
-    public function __construct($I18NObject) {
-        $this->i18n = $I18NObject;
-        $this->data = [];
+    public function __construct(Config $config) {
+        $this->config = $config;
+        $this->collections = [];
     }
 
-    /** Nr. of collections */
-    public function length() {
-        return count($this->data);
+    public function getAPIURL() {
+        return $this->config->getAPI()->getURL();
     }
 
-    /** Add collection */
-    public function add($index, $url = false) {
-        $fullIndex = Index::toCollectionIndex($index, $this->i18n->getLanguage(), $this->i18n->getDomain());
-        if (!$this->is($fullIndex)) {
-            return $this->data[$fullIndex] = new Collection($this->i18n, $fullIndex, $url);
+    public function getLanguage() {
+        return $this->config->getLanguage();
+    }
+
+    public function getDomain() {
+        return $this->config->getDomain();
+    }
+
+    public function getTranslation($collection, $index) {
+        $collectionData = $this->getCollectionByName($collection);
+        if ($collectionData && isset($collectionData[$index])) {
+            return $collectionData[$index]['text'];
         }
-        return $this->get($fullIndex);
+        return false;
     }
 
-    /** Check for collection */
-    public function is($index) {
-        return isset($this->data[Index::toCollectionIndex($index, $this->i18n->getLanguage(), $this->i18n->getDomain())]);
+    private function getCollectionByName($collection) {
+        if (isset($this->collections[$collection])) {
+            return $this->collections[$collection];
+        } else {
+            return $this->addCollection($collection);
+        }
     }
 
-    /** Get collection */
-    public function get($index) {
-        $fullIndex = Index::toCollectionIndex($index, $this->i18n->getLanguage(), $this->i18n->getDomain());
-        return $this->is($fullIndex) ? $this->data[$fullIndex] : false;
+    private function addCollection($collection) {
+        if (isset($this->collections[$collection])) {
+            return $this->collections[$collection];
+        }
+        if (Validate::collection($collection)) {
+            $collectionUrl = $this->config->getCollectionUrl($collection);
+            if ($collectionUrl) {
+                if ($collectionData = $this->config->getAPI()->fetchCollection($collectionUrl)) {
+                    $this->collections[$collection] = $collectionData;
+                    return $this->collections[$collection];
+                }
+            } else {
+                trigger_error("I18NClass Collections Error. Collection URL not found in config file for '{$collection}'.");
+            }
+        } else {
+            trigger_error("I18NClass Collections Error. Collection '{$collection}' is not valid.");
+        }
+        return false;
     }
-
 }

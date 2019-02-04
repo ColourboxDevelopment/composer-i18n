@@ -4,24 +4,11 @@ namespace CBX;
 
 class i18n
 {
-    private static $i18nObject = null;
-
-    public static function init() {
-        self::$i18nObject = new i18nClass();
+    public static function create($language, $domain, $apiUrl) {
+        return new i18nClass(new Collections(new Config($language, $domain, new API($apiUrl))));
     }
 
-    /** 
-    * Overloading methods
-    */
-    public static function __callStatic( $name, $parameters ) {
-        try {
-            return forward_static_call_array( array( self::$i18nObject, $name ), $parameters );
-        } catch (Exception $e) {
-            trigger_error( __METHOD__.': '.$e->getMessage() );
-        }
-        return false;
+    public static function createOffline($language, $domain, $jsonDir) {
+        return new i18nClass(new Collections(new Config($language, $domain, new APIOffline($jsonDir))));
     }
-
 }
-
-i18n::init();

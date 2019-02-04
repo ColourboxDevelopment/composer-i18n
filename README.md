@@ -18,19 +18,26 @@ composer update colourbox-account/i18n
 
 ## Usage
 
-### Initialize
+### Create instance
 
 ```php
-CBX\i18n::setAPIURL("https://test-tb.cbx.xyz");
-CBX\i18n::setLanguage('en_GB');
-CBX\i18n::setDomain('i18n-develop-test');
+$api = new CBX\API("https://test-tb.cbx.xyz");
+$config = new CBX\Config("en_GB", "i18n-develop-test");
+$collections = new CBX\Collections($config);
+$i18n = new i18nClass($collections);
+```
+
+### Create instance with factory
+
+```php
+$i18n = CBX\i18n::create("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz");
 ```
 
 ### Getting simple translation
 
 ```php
 // 'contact/phone' -> '+45 55 55 45'
-echo CBX\i18n::_('contact/phone');
+echo $i18n->_('contact/phone');
 // output: +45 55 55 45
 ```
 
@@ -38,7 +45,7 @@ echo CBX\i18n::_('contact/phone');
 
 ```php
 // 'global/newPrice' -> 'New price: $price$'
-echo CBX\i18n::_('newPrice', [ 'price' => '10€' ]);
+echo $i18n->_('newPrice', [ 'price' => '10€' ]);
 // output: New price: 10€
 ```
 
@@ -46,7 +53,7 @@ echo CBX\i18n::_('newPrice', [ 'price' => '10€' ]);
 
 ```html
 <!-- 'global/helloWorld' -> 'Hello World!!!' -->
-<p><?=CBX\i18n::_htmlEscaped('helloWorld');?></p>
+<p><?=$i18n->_htmlEscaped('helloWorld');?></p>
 <!-- output: <p>Hello World!!!</p> -->
 ```
 
@@ -56,10 +63,16 @@ echo CBX\i18n::_('newPrice', [ 'price' => '10€' ]);
 
 # Test
 
-Run
+Offline test
 
 ```
-test/test.sh
+test/online-test.sh
+```
+
+Online test
+
+```
+test/offline-test.sh
 ```
 
 
@@ -68,6 +81,8 @@ test/test.sh
 PHP: ^5.3.0 || ^7.0
 
 PHP Curl extension
+
+PHP Memcache extension
 
 > This package requires no other composer packages
 
