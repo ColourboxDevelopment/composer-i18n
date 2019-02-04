@@ -41,9 +41,9 @@ final class Test extends TestCase {
 
     public function testCanInstantiateMainObject(): void {
         global $api, $config, $collections, $i18n;
-        $i18n = new CBX\i18nClass($collections);
+        $i18n = new CBX\I18nClass($collections);
         $this->assertInstanceOf(
-            CBX\i18nClass::class,
+            CBX\I18nClass::class,
             $i18n
         );
     }
@@ -82,7 +82,7 @@ final class Test extends TestCase {
 
     public function testCanCreateObjectWithFactory(): void {
         global $i18nFromFactory;
-        $i18nFromFactory = CBX\i18n::create(LANGUAGE, DOMAIN, APIURL);
+        $i18nFromFactory = CBX\I18nFactory::create(LANGUAGE, DOMAIN, APIURL);
         $this->assertEquals(
             APIURL,
             $i18nFromFactory->getAPIURL()

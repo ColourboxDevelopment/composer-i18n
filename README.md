@@ -24,13 +24,13 @@ composer update colourbox-account/i18n
 $api = new CBX\API("https://test-tb.cbx.xyz");
 $config = new CBX\Config("en_GB", "i18n-develop-test");
 $collections = new CBX\Collections($config);
-$i18n = new i18nClass($collections);
+$i18n = new CBX\I18nClass($collections);
 ```
 
 ### Create instance with factory
 
 ```php
-$i18n = CBX\i18n::create("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz");
+$i18n = CBX\I18nFactory::create("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz");
 ```
 
 ### Getting simple translation

@@ -2,7 +2,7 @@
 
 namespace CBX;
 
-class i18nClass
+class I18nClass
 {
     private $collections;
 
