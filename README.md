@@ -25,15 +25,6 @@ composer update colourbox-account/i18n
 // With Memcached
 $cache = new CBX\Cache("127.0.0.1", 11211);
 
-/*
-With Redis
-$cache = new \Predis\Client([
-            'scheme' => "tcp",
-            'host'   => "127.0.0.1",
-            'port'   => 6379,
-        ]);
-*/
-
 $api = new CBX\API("https://test-tb.cbx.xyz", $cache);
 $config = new CBX\Config("en_GB", "i18n-develop-test", $api);
 $collections = new CBX\Collections($config);
@@ -43,18 +34,7 @@ $i18n = new CBX\I18nClass($collections);
 ### Create instance with factory
 
 ```php
-// With Memcached
-$i18n = CBX\I18nFactory::createMemcached("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz", "127.0.0.1", 11211);
-```
-
-```php
-// With Redis
-$cache = new \Predis\Client([
-            'scheme' => "tcp",
-            'host'   => "127.0.0.1",
-            'port'   => 6379,
-        ]);
-$i18n = CBX\I18nFactory::createRedis("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz", $cache);
+$i18n = CBX\I18nFactory::create("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz", "127.0.0.1", 11211);
 ```
 
 ### Getting simple translation
@@ -87,20 +67,9 @@ echo $i18n->_('newPrice', [ 'price' => '10€' ]);
 
 # Test
 
-Offline tests
-
 ```
-test/online-memcached-test.sh
-test/online-redis-test.sh
+test/test.sh
 ```
-
-Online tests
-
-```
-test/offline-memcached-test.sh
-test/offline-redis-test.sh
-```
-
 
 # Requirement
 
