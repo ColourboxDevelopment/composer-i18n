@@ -1,27 +1,26 @@
 <?php
 
-namespace CBX;
-
-class API
+class MockAPI
 {
-    private $url = null;
+    private $dir = null;
     private $cache = null;
 
-    public function __construct($url, $cache) {
-        $this->url = $url;
+    public function __construct($dir, $cache) {
+        $this->dir = $dir;
         $this->cache = $cache;
     }
 
     public function getURL() {
-        return $this->url;
+        return $this->dir;
     }
 
     public function fetchConfig($language, $domain) {
-        return $this->fetch("{$this->getURL()}/translation/config/{$language}/{$domain}");
+        return $this->fetch("{$this->dir}/{$language}_{$domain}.json");
     }
 
-    public function fetchCollection($url) {
-        $cacheKey = 'cbx-i18n-online-'.md5($url);
+    public function fetchCollection($file) {
+        $path = $this->dir.'/'.$file;
+        $cacheKey = 'cbx-i18n-offline-'.md5($path);
         $cachedData = $this->cache->get($cacheKey);
         if ($cachedData) {
             if (gettype($cachedData) === "string") {
@@ -34,25 +33,22 @@ class API
                 return $cachedData;
             }
         }
-        $data = $this->fetch($url);
+        $data = $this->fetch($path);
         if ($data) {
             $this->cache->set($cacheKey, gettype($data) === "string" ? $data : json_encode($data));
         }
         return $data;
     }
 
-    private function fetch($url) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-        $result = curl_exec($ch);
-        curl_close($ch);
-        if (!$result) {
-            throw new \Exception("I18NClass API Error. (CURL) ".curl_error($ch));
+    private function fetch($path) {
+        if (!file_exists($path)) {
+            throw new \Exception("I18NClass API Error. File '{$path}' is not exists.");
         }
-        $json = json_decode(trim($result), true);
+        $content = file_get_contents($path);
+        if (!$content) {
+            throw new \Exception("I18NClass API Error. Can't get content of file '{$path}'.");
+        }
+        $json = json_decode(trim($content), true);
         if (json_last_error() !== 0) {
             throw new \Exception("I18NClass API Error. (JSON) ".json_last_error_msg());
         }

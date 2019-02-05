@@ -25,13 +25,12 @@ class I18nClass
     public function _($index, $placeholders = []) {
         $text = $index;
         $indexData = Index::getIndexData($index);
-        if ($indexData) {
-            $translation = $this->collections->getTranslation($indexData->collection, $indexData->index);
-            if ($translation) {
-                $text = $translation;
-            }
-        } else {
+        if (!$indexData) {
             throw new \Exception("I18NClass Error. Index '{$index}' is not valid index. Please use 'index' or 'collection/index'.");
+        }
+        $translation = $this->collections->getTranslation($indexData->collection, $indexData->index);
+        if ($translation) {
+            $text = $translation;
         }
         return $this->replacePlaceholders($text, $placeholders);
     }

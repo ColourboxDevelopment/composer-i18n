@@ -46,17 +46,14 @@ class Collections
         }
         if (Validate::collection($collection)) {
             $collectionUrl = $this->config->getCollectionUrl($collection);
-            if ($collectionUrl) {
-                if ($collectionData = $this->config->getAPI()->fetchCollection($collectionUrl)) {
-                    $this->collections[$collection] = $collectionData;
-                    return $this->collections[$collection];
-                }
-            } else {
+            if (!$collectionUrl) {
                 throw new \Exception("I18NClass Collections Error. Collection URL not found in config file for '{$collection}'.");
             }
-        } else {
-            throw new \Exception("I18NClass Collections Error. Collection '{$collection}' is not valid.");
+            if ($collectionData = $this->config->getAPI()->fetchCollection($collectionUrl)) {
+                $this->collections[$collection] = $collectionData;
+                return $this->collections[$collection];
+            }
         }
-        return false;
+        throw new \Exception("I18NClass Collections Error. Collection '{$collection}' is not valid.");
     }
 }

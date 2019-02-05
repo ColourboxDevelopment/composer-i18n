@@ -11,16 +11,14 @@ class Config
     private $loaded = false;
 
     public function __construct($language, $domain, $api) {
-        if (Validate::language($language)) {
-            $this->language = $language;
-        } else {
+        if (!Validate::language($language)) {
             throw new \Exception("I18NClass Config Data Error. Language '{$language}' is not valid.");
         }
-        if (Validate::domain($domain)) {
-            $this->domain = $domain;
-        } else {
+        if (!Validate::domain($domain)) {
             throw new \Exception("I18NClass Config Data Error. Domain '{$domain}' is not valid.");
         }
+        $this->domain = $domain;
+        $this->language = $language;
         $this->api = $api;
     }
 
@@ -49,11 +47,10 @@ class Config
             $this->loaded = true;
             $configData = $this->api->fetchConfig($this->getLanguage(), $this->getDomain());
             if ($configData) {
-                if (isset($configData['collections'])) {
-                    $this->collectionUrls = $configData['collections'];
-                } else {
+                if (!isset($configData['collections'])) {
                     throw new \Exception("I18NClass Config Error. Config loaded, but collections are missing.");
                 }
+                $this->collectionUrls = $configData['collections'];
             }
         }
     }
