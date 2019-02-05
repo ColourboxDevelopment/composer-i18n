@@ -41,7 +41,7 @@ class API
             }
             $data = $this->fetch($url);
             if ($data) {
-                $this->cache->set($url, gettype($data) === "string" ? json_encode($data) : $data);
+                $this->cache->set($url, gettype($data) === "string" ? $data : json_encode($data));
             }
             return $data;
         }
