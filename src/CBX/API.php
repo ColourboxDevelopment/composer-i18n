@@ -5,13 +5,15 @@ namespace CBX;
 class API
 {
     private $url = null;
+    private $cache = null;
 
-    public function __construct($url) {
+    public function __construct($url, Cache $cache) {
         if ($url) {
             $this->url = $url;
         } else {
-            trigger_error("I18NClass API Error. API url '{$url}' is not valid.");
+            throw new \Exception("I18NClass API Error. API url '{$url}' is not valid.");
         }
+        $this->cache = $cache;
     }
 
     public function getURL() {
@@ -23,7 +25,15 @@ class API
     }
 
     public function fetchCollection($url) {
-        return $this->fetch($url);
+        $cachedData = $this->cache->get($url);
+        if ($cachedData) {
+            return $cachedData;
+        }
+        $data = $this->fetch($url);
+        if ($data) {
+            $this->cache->set($url, $data);
+        }
+        return $data;
     }
 
     private function fetch($url) {
@@ -40,13 +50,13 @@ class API
                 if (json_last_error() === 0) {
                     return $json;
                 } else {
-                    trigger_error("I18NClass API Error. (JSON) ".json_last_error_msg());
+                    throw new \Exception("I18NClass API Error. (JSON) ".json_last_error_msg());
                 }
             } else {
-                trigger_error("I18NClass API Error. (CURL) ".curl_error($ch));
+                throw new \Exception("I18NClass API Error. (CURL) ".curl_error($ch));
             }
         } else {
-            trigger_error("I18NClass API Error. Url '{$url}' is not valid. ");
+            throw new \Exception("I18NClass API Error. Url '{$url}' is not valid. ");
         }
         return false;
     }

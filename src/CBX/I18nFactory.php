@@ -4,11 +4,11 @@ namespace CBX;
 
 class I18nFactory
 {
-    public static function create($language, $domain, $apiUrl) {
-        return new I18nClass(new Collections(new Config($language, $domain, new API($apiUrl))));
+    public static function create($language, $domain, $apiUrl, $cacheHost, $cachePort) {
+        return new I18nClass(new Collections(new Config($language, $domain, new API($apiUrl, new Cache($cacheHost, $cachePort)))));
     }
 
-    public static function createOffline($language, $domain, $jsonDir) {
-        return new I18nClass(new Collections(new Config($language, $domain, new APIOffline($jsonDir))));
+    public static function createOffline($language, $domain, $jsonDir, $cacheHost, $cachePort) {
+        return new I18nClass(new Collections(new Config($language, $domain, new APIOffline($jsonDir, new Cache($cacheHost, $cachePort)))));
     }
 }

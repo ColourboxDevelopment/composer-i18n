@@ -3,11 +3,13 @@
 ini_set('display_errors','On');
 error_reporting(E_ALL);
 
+require_once("config.php");
+
 spl_autoload_register(function ($class_name) {
     require_once __DIR__ . '/../src/'.str_replace('\\', '/', $class_name).'.php';
 });
 
-$i18n = CBX\I18nFactory::create("en_GB", "i18n-develop-example", "https://tb.colourbox.com");
+$i18n = CBX\I18nFactory::create(LANGUAGE, DOMAIN, APIURL, MEMCACHED_HOST, MEMCACHED_PORT);
 
 $output = [
     "API Host: ".$i18n->getAPIURL(),

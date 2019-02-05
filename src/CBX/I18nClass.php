@@ -31,7 +31,7 @@ class I18nClass
                 $text = $translation;
             }
         } else {
-            trigger_error("I18NClass Error. Index '{$index}' is not valid index. Please use 'index' or 'collection/index'.");
+            throw new \Exception("I18NClass Error. Index '{$index}' is not valid index. Please use 'index' or 'collection/index'.");
         }
         return $this->replacePlaceholders($text, $placeholders);
     }

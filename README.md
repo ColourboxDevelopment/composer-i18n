@@ -21,8 +21,9 @@ composer update colourbox-account/i18n
 ### Create instance
 
 ```php
-$api = new CBX\API("https://test-tb.cbx.xyz");
-$config = new CBX\Config("en_GB", "i18n-develop-test");
+$cache = new CBX\Cache("127.0.0.1", 11211);
+$api = new CBX\API("https://test-tb.cbx.xyz", $cache);
+$config = new CBX\Config("en_GB", "i18n-develop-test", $api);
 $collections = new CBX\Collections($config);
 $i18n = new CBX\I18nClass($collections);
 ```
@@ -30,7 +31,7 @@ $i18n = new CBX\I18nClass($collections);
 ### Create instance with factory
 
 ```php
-$i18n = CBX\I18nFactory::create("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz");
+$i18n = CBX\I18nFactory::create("en_GB", "i18n-develop-test", "https://test-tb.cbx.xyz", "127.0.0.1", 11211);
 ```
 
 ### Getting simple translation
@@ -82,7 +83,7 @@ PHP: ^5.3.0 || ^7.0
 
 PHP Curl extension
 
-PHP Memcache extension
+PHP Memcached extension
 
 > This package requires no other composer packages
 

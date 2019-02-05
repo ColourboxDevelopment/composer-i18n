@@ -14,12 +14,12 @@ class Config
         if (Validate::language($language)) {
             $this->language = $language;
         } else {
-            trigger_error("I18NClass Config Data Error. Language '{$language}' is not valid.");
+            throw new \Exception("I18NClass Config Data Error. Language '{$language}' is not valid.");
         }
         if (Validate::domain($domain)) {
             $this->domain = $domain;
         } else {
-            trigger_error("I18NClass Config Data Error. Domain '{$domain}' is not valid.");
+            throw new \Exception("I18NClass Config Data Error. Domain '{$domain}' is not valid.");
         }
         $this->api = $api;
     }
@@ -52,7 +52,7 @@ class Config
                 if (isset($configData['collections'])) {
                     $this->collectionUrls = $configData['collections'];
                 } else {
-                    trigger_error("I18NClass Config Error. Config loaded, but collections are missing.");
+                    throw new \Exception("I18NClass Config Error. Config loaded, but collections are missing.");
                 }
             }
         }

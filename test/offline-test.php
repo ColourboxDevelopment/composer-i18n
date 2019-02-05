@@ -5,6 +5,7 @@ require_once("./config.php");
 use PHPUnit\Framework\TestCase;
 
 // Globals
+$cache;
 $api;
 $config;
 $collections;
@@ -12,9 +13,18 @@ $i18n;
 $i18nFromFactory;
 
 final class Test extends TestCase {
+    public function testCanInstantiateCacheObject(): void {
+        global $cache;
+        $cache = new CBX\Cache(MEMCACHED_HOST, MEMCACHED_PORT);
+        $this->assertInstanceOf(
+            CBX\Cache::class,
+            $cache
+        );
+    }
+
     public function testCanInstantiateApiOfflineObject(): void {
-        global $api;
-        $api = new CBX\APIOffline(JSONDIR);
+        global $cache, $api;
+        $api = new CBX\APIOffline(JSONDIR, $cache);
         $this->assertInstanceOf(
             CBX\APIOffline::class,
             $api
@@ -82,7 +92,7 @@ final class Test extends TestCase {
 
     public function testCanCreateObjectWithFactory(): void {
         global $i18nFromFactory;
-        $i18nFromFactory = CBX\I18nFactory::create(LANGUAGE, DOMAIN, APIURL);
+        $i18nFromFactory = CBX\I18nFactory::create(LANGUAGE, DOMAIN, APIURL, MEMCACHED_HOST, MEMCACHED_PORT);
         $this->assertEquals(
             APIURL,
             $i18nFromFactory->getAPIURL()

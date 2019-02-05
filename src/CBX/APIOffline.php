@@ -5,13 +5,15 @@ namespace CBX;
 class APIOffline
 {
     private $dir = null;
+    private $cache = null;
 
-    public function __construct($dir) {
+    public function __construct($dir, Cache $cache) {
         if (file_exists($dir)) {
             $this->dir = $dir;
         } else {
-            trigger_error("I18NClass API Error. API directory '{$dir}' is not exists.");
+            throw new \Exception("I18NClass API Error. API directory '{$dir}' is not exists.");
         }
+        $this->cache = $cache;
     }
 
     public function getURL() {
@@ -34,13 +36,13 @@ class APIOffline
                 if (json_last_error() === 0) {
                     return $json;
                 } else {
-                    trigger_error("I18NClass API Error. (JSON) ".json_last_error_msg());
+                    throw new \Exception("I18NClass API Error. (JSON) ".json_last_error_msg());
                 }
             } else {
-                trigger_error("I18NClass API Error. File '{$path}' is not exists.");
+                throw new \Exception("I18NClass API Error. File '{$path}' is not exists.");
             }
         } else {
-            trigger_error("I18NClass API Error. File '{$path}' is not exists.");
+            throw new \Exception("I18NClass API Error. File '{$path}' is not exists.");
         }
         return false;
     }

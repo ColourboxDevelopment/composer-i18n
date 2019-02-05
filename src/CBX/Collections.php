@@ -52,10 +52,10 @@ class Collections
                     return $this->collections[$collection];
                 }
             } else {
-                trigger_error("I18NClass Collections Error. Collection URL not found in config file for '{$collection}'.");
+                throw new \Exception("I18NClass Collections Error. Collection URL not found in config file for '{$collection}'.");
             }
         } else {
-            trigger_error("I18NClass Collections Error. Collection '{$collection}' is not valid.");
+            throw new \Exception("I18NClass Collections Error. Collection '{$collection}' is not valid.");
         }
         return false;
     }
