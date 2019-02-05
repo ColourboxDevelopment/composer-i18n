@@ -26,7 +26,8 @@ class API
 
     public function fetchCollection($url) {
         if ($url) {
-            $cachedData = $this->cache->get($url);
+            $cacheKey = 'cbx-i18n-online-'.md5($url);
+            $cachedData = $this->cache->get($cacheKey);
             if ($cachedData) {
                 if (gettype($cachedData) === "string") {
                     $json = json_decode(trim($cachedData), true);
@@ -41,7 +42,7 @@ class API
             }
             $data = $this->fetch($url);
             if ($data) {
-                $this->cache->set($url, gettype($data) === "string" ? $data : json_encode($data));
+                $this->cache->set($cacheKey, gettype($data) === "string" ? $data : json_encode($data));
             }
             return $data;
         }
