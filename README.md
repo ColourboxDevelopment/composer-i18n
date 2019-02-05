@@ -87,16 +87,18 @@ echo $i18n->_('newPrice', [ 'price' => '10€' ]);
 
 # Test
 
-Offline test
+Offline tests
 
 ```
-test/online-test.sh
+test/online-memcached-test.sh
+test/online-redis-test.sh
 ```
 
-Online test
+Online tests
 
 ```
-test/offline-test.sh
+test/offline-memcached-test.sh
+test/offline-redis-test.sh
 ```
 
 
