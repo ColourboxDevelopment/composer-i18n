@@ -7,7 +7,7 @@ class API
     private $url = null;
     private $cache = null;
 
-    public function __construct($url, Cache $cache) {
+    public function __construct($url, $cache) {
         if ($url) {
             $this->url = $url;
         } else {
@@ -25,15 +25,27 @@ class API
     }
 
     public function fetchCollection($url) {
-        $cachedData = $this->cache->get($url);
-        if ($cachedData) {
-            return $cachedData;
+        if ($url) {
+            $cachedData = $this->cache->get($url);
+            if ($cachedData) {
+                if (gettype($cachedData) === "string") {
+                    $json = json_decode(trim($cachedData), true);
+                    if (json_last_error() === 0) {
+                        return $json;
+                    } else {
+                        throw new \Exception("I18NClass API Error. Collection JSON. ".json_last_error_msg());
+                    }
+                } else {
+                    return $cachedData;
+                }
+            }
+            $data = $this->fetch($url);
+            if ($data) {
+                $this->cache->set($url, gettype($data) === "string" ? json_encode($data) : $data);
+            }
+            return $data;
         }
-        $data = $this->fetch($url);
-        if ($data) {
-            $this->cache->set($url, $data);
-        }
-        return $data;
+        return false;
     }
 
     private function fetch($url) {

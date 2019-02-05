@@ -6,10 +6,19 @@ error_reporting(E_ALL);
 require_once("config.php");
 
 spl_autoload_register(function ($class_name) {
-    require_once __DIR__ . '/../src/'.str_replace('\\', '/', $class_name).'.php';
+    if (file_exists(__DIR__ . '/../src/'.str_replace('\\', '/', $class_name).'.php')) {
+        require_once __DIR__ . '/../src/'.str_replace('\\', '/', $class_name).'.php';
+    }
 });
 
-$i18n = CBX\I18nFactory::create(LANGUAGE, DOMAIN, APIURL, MEMCACHED_HOST, MEMCACHED_PORT);
+require_once('../vendor/predis/predis/autoload.php');
+
+$redis = new Predis\Client([
+    'scheme' => REDIS_SCHEMA,
+    'host'   => REDIS_HOST,
+    'port'   => REDIS_PORT,
+]);
+$i18n = CBX\I18nFactory::createRedis(LANGUAGE, DOMAIN, APIURL, $redis);
 
 $output = [
     "API Host: ".$i18n->getAPIURL(),

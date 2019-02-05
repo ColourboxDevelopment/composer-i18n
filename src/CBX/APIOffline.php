@@ -7,7 +7,7 @@ class APIOffline
     private $dir = null;
     private $cache = null;
 
-    public function __construct($dir, Cache $cache) {
+    public function __construct($dir, $cache) {
         if (file_exists($dir)) {
             $this->dir = $dir;
         } else {
