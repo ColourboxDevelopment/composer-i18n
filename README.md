@@ -27,7 +27,7 @@ $cache = new CBX\Cache("127.0.0.1", 11211);
 
 /*
 With Redis
-$cache = new Predis\Client([
+$cache = new \Predis\Client([
             'scheme' => "tcp",
             'host'   => "127.0.0.1",
             'port'   => 6379,
@@ -49,7 +49,7 @@ $i18n = CBX\I18nFactory::createMemcached("en_GB", "i18n-develop-test", "https://
 
 ```php
 // With Redis
-$cache = new Predis\Client([
+$cache = new \Predis\Client([
             'scheme' => "tcp",
             'host'   => "127.0.0.1",
             'port'   => 6379,
