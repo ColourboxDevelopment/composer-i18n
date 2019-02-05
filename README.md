@@ -24,7 +24,6 @@ composer update colourbox-account/i18n
 ```php
 // With Memcached
 $cache = new CBX\Cache("127.0.0.1", 11211);
-
 $api = new CBX\API("https://test-tb.cbx.xyz", $cache);
 $config = new CBX\Config("en_GB", "i18n-develop-test", $api);
 $collections = new CBX\Collections($config);
